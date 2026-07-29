@@ -1,0 +1,138 @@
+# ============================================================
+# PATIENT DATA — never commit. Medical images are PHI even when
+# DICOM tags are stripped. Anything matching these patterns is
+# blocked regardless of directory.
+# ============================================================
+*.dcm
+*.DCM
+*.dicom
+*.ima
+*.IMA
+IM_*
+IMG_*
+*.nii
+*.nii.gz
+*.nrrd
+*.nhdr
+*.mha
+*.mhd
+*.raw
+*.img
+*.hdr
+*.analyze
+*.par
+*.rec
+*.PAR
+*.REC
+*.v
+*.mnc
+*.gipl
+*.vtk
+
+# Common data directory names
+data/
+Data/
+DATA/
+dicom/
+DICOM/
+raw/
+cases/
+case*/
+patients/
+subjects/
+nifti/
+scans/
+studies/
+phi/
+PHI/
+
+# Derived images — a rendered PNG of a patient scan is still PHI
+*.png
+*.jpg
+*.jpeg
+*.tif
+*.tiff
+*.bmp
+*.gif
+!docs/figures/*.png          # only curated, non-patient figures
+!docs/figures/*.svg
+
+# Result artifacts
+*.tfm
+*.h5
+*.mat
+roi_stats.json
+candidates.csv
+series_index.csv
+results/
+output/
+outputs/
+work/
+tmp/
+
+# Archives (easy way to smuggle a dataset in by accident)
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+
+# ============================================================
+# Python
+# ============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+.conda/
+
+# Testing / typing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# ============================================================
+# Editors / OS
+# ============================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
