@@ -1,5 +1,7 @@
 # dwi-roi-toolkit
 
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 Semi-automatic whole-volume ROI delineation and quantification on diffusion-weighted MRI.
 
 Turns lesion tracing from a slice-by-slice manual chore into two steps: a radiologist places a
