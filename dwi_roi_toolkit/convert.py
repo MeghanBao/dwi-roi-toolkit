@@ -101,14 +101,20 @@ def convert(dicom_dir, out_dir, anonymize=False):
         raise SystemExit(f"在 {dicom_dir} 下没找到 DICOM 文件")
 
     index_rows = []
-    for (uid, bval), paths in sorted(groups.items()):
+    for (uid, bval), paths in sorted(groups.items(), key=lambda kv: (kv[0][0], -1 if kv[0][1] is None else kv[0][1])):
         paths = sort_slices(paths)
         ref = pydicom.dcmread(paths[0], stop_before_pixels=True, force=True)
 
         # SimpleITK 的 ImageSeriesReader 会正确处理 spacing / direction / rescale
         reader = sitk.ImageSeriesReader()
         reader.SetFileNames(paths)
-        img = reader.Execute()
+        try:
+            img = reader.Execute()
+        except RuntimeError as e:
+            # 非图像 DICOM(二次截图/演示状态等)无法读取; 跳过而非整体中止
+            print(f"[skip] {getattr(ref,'SeriesDescription','')!r} "
+                  f"(uid={uid[-12:]}, b={bval}): 无法作为图像读取 ({str(e).splitlines()[-1]})")
+            continue
 
         # 单层序列 SimpleITK 会给出 z-spacing=1, 用 DICOM 的层间距修正
         if img.GetSize()[2] == 1:
