@@ -161,6 +161,23 @@ dwi-roi segment --image "$case/reg/moved.nii.gz" --seed $X $Y $Z \
 A common failure mode is receiving one exported slice instead of the study directory. Whole-volume
 delineation is impossible in that case.
 
+### Reconcile against DICOMDIR before ingesting
+
+An exported study ships with a `DICOMDIR` — a few-megabyte index (no pixels) listing every series
+the study *should* contain and how many images each holds. Counting files in the folder never tells
+you what was *supposed* to arrive, so silent truncation slips through. Reconcile the two:
+
+```bash
+python scripts/check_missing.py /path/to/DICOMDIR /path/to/received_folder --per-bvalue
+```
+
+It prints an indexed-vs-received table per series (`缺失` / `不全(差N)` / `完整`) and, with
+`--per-bvalue`, expands incomplete diffusion series by b-value — which is how a DKI series that
+looked like it had merely "fewer slices" turned out to be truncated (each b-value short 7–8 slices).
+Non-image objects such as Philips private series-data files (`XX_*`, no `Rows`) are filtered out, so
+a series that never arrived reads as `缺失`, not a misleading "received 1". The script exits non-zero
+when anything is missing, so it drops straight into an intake step. Run it on every new case.
+
 ---
 
 ## Patient data and this repository
